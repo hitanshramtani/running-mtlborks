@@ -1,0 +1,125 @@
+## Project Description: Automated CNN Design using MTLBORKS
+### Objective
+This project implements 
+MTLBORKS-CNN, an innovative and automated method for designing high-performance Convolutional Neural Network (CNN) architectures for image classification. The primary goal is to overcome the challenges of manual CNN design, which is typically time-consuming, requires significant domain expertise, and relies on a trial-and-error process. This implementation automates the search for an optimal network architecture tailored to a specific dataset, such as MNIST.
+
+### Core Methodology
+The project is built on a novel optimization algorithm called Modified Teaching-Learning-Based Optimization with Refined Knowledge Sharing (MTLBORKS). This algorithm automates the design process by searching for the ideal combination of network hyperparameters.
+Key implemented features from the paper include:
+Flexible Solution Encoding: Each potential CNN architecture is represented as a numerical vector, which encodes the number of layers, filter counts, kernel sizes, pooling parameters, and neuron counts.
+Modified Teacher Phase: This phase uses a social learning concept to guide the search, enhancing population diversity while accelerating convergence toward promising solutions .
+
+Modified Learner Phase: This phase incorporates both self-learning and adaptive peer learning, allowing for a more effective balance between exploring new architectures (exploration) and refining existing ones (exploitation) .
+
+Dual-Criterion Selection: A unique selection strategy that determines which solutions survive to the next generation by considering both their fitness (classification accuracy) and their diversity. This helps prevent the algorithm from getting stuck in local optima and promotes the discovery of novel, efficient networks .
+
+### Implementation & Workflow
+The project is developed in Python using a modular architecture. Key libraries include TensorFlow for building and training the CNN models and NumPy for numerical operations. The code is organized into distinct modules for each core component (e.g., data_loader.py, fitness_evaluation.py, optimizer.py), with main.py serving as the central entry point for configuration and execution.
+
+The workflow follows Algorithm 11 from the paper:
+
+
+Setup: The program starts by loading a dataset (e.g., MNIST) and initializing a population of random CNN architectures.
+
+
+Optimization Loop: The algorithm iterates for a set number of generations. In each generation, the Teacher Phase, Learner Phase, and Dual-Criterion Selection are executed to evolve the population of solutions .
+
+
+Fitness Approximation: To ensure efficiency, candidate CNNs are trained for only one epoch during the optimization loop to quickly approximate their fitness.
+
+
+
+Final Training: After the loop completes, the single best architecture found undergoes full training with a large number of epochs (e.g., 100) to determine its final, accurate performance .
+
+
+### Expected Outcome
+The final output of this project is a fully trained, optimized CNN model tailored to the input dataset. The objective is to produce network architectures that achieve classification accuracy competitive with or superior to state-of-the-art methods, often with significantly lower network complexity
+
+<!-- $env:PYTHONPATH="." | to be remembered -->
+## Decoding
+## Population
+## fitness
+## Modified_teacher_phase = u_mean -> u_social -> modified_teacher_phase
+## Modifoed_learner_phase = self_learning -> adaptive peerlearning -> modified_learner_phase
+## Dual_criterio_selection
+## proposed_solution
+## data loader 
+## main.py
+
+
+## Diagram: Full Algorithm Implementation Architecture
+                                                ┌───────────────────────────┐
+                                                │          main.py          │
+                                                │ (Sets Config, Starts Run) │
+                                                └───────────┬───────────────┘
+                                                            ▲
+                                            1. Calls with   │
+                                            'config' object ▼
+┌───────────────────────────┐                     ┌───────────────────────────┐      ┌───────────────────────────┐
+│ population_initializer.py │<─────────────────── │                           │ ────>│  modified_teacher_phase.py│
+│      (Algorithm 2)        │2. Initialize        │      optimizer.py         │      │       (Algorithm 6)       │
+└───────────────────────────┘Population           │ (The Central Orchestrator)│      └───────────────────────────┘
+                    ┌────────────────────────────>│                           │                      ▲
+                    |                             └───────────┬───────────────┘                      │ 3. Main Loop:
+                    |                                         │                                      │    Teacher Phase
+                    |                                         │ 6. Returns                           │
+                    |                                         │    Final Result                      │
+                ┌───────────────────────────┐                 │                                      │
+                │ fitness_evaluation.py     │                 ▼                                      ▼
+                │      (Algorithm 3)        │      ┌───────────────────────────┐      ┌───────────────────────────┐
+                └───────────────────────────┘      │          main.py          │      │  modified_learner_phase.py│
+                            ▲                      │     (Prints Results)      │      │       (Algorithm 9)       │
+                            │ 5. Final Full        └───────────────────────────┘      └───────────────────────────┘
+                            │    Training                                                       ▲
+                            │                                                                   │ 4. Main Loop:
+                            │                                                                   │    Learner Phase
+                            │                                                                   │
+                            |                            ┌───────────────────────────┐          |
+                            └───────────────────────────│ (Calls Selection - Alg 10)│<──────────┘
+                                                        └───────────────────────────┘
+                                                        
+
+## Diagram: Full Algorithm Process Flow
+┌─────────────────────────────────┐
+│             main.py             │
+│        (Program Starts)         │
+└─────────────────────────────────┘
+                 │
+      [1. SETUP PHASE]
+                 ▼
+┌─────────────────────────────────┐
+│   - Define 'config' dictionary  │
+│   - Load Data (calls loader)    │ ────> ╔═════════════════════╗
+│   - Initialize Population       │ ────> ║ Component Modules     ║
+│     (calls initializer)         │ ────> ║---------------------║
+└─────────────────────────────────┘       ║ data_loader.py      ║
+                 │                        ║ population_init...py║
+      [2. MAIN OPTIMIZATION LOOP]         ║ teacher_phase.py    ║
+                 │                        ║ learner_phase.py    ║
+┌─────────────────────────────────┐       ║ selection.py        ║
+│       (Repeats T_max times)     │       ║ fitness_eval.py     ║
+│                                 │       ╚═════════════════════╝
+│  a. Calls Teacher Phase         │ <────┘
+│     (to generate P_off)         │
+│                                 │
+│  b. Calls Learner Phase         │ <────┘
+│     (to update P_off)           │
+│                                 │
+│  c. Calls Selection Scheme      │ <────┘
+│     (to create the new P)       │
+│                                 │
+└─────────────────────────────────┘
+                 │
+      [3. FINAL TRAINING PHASE]
+                 │
+┌─────────────────────────────────┐
+│  - Fully Train Best Solution    │
+│    (calls fitness evaluation)   │ <────┘
+└─────────────────────────────────┘
+                 │
+      [4. RESULTS]
+                 ▼
+┌─────────────────────────────────┐
+│     Prints Final CNN Details    │
+│          (in main.py)           │
+└─────────────────────────────────┘
