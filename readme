@@ -1,5 +1,6 @@
-## Project Description: Automated CNN Design using MTLBORKS
-### Objective
+Project Description: Automated CNN Design using MTLBORKS
+
+Objective
 This project implements 
 MTLBORKS-CNN, an innovative and automated method for designing high-performance Convolutional Neural Network (CNN) architectures for image classification. The primary goal is to overcome the challenges of manual CNN design, which is typically time-consuming, requires significant domain expertise, and relies on a trial-and-error process. This implementation automates the search for an optimal network architecture tailored to a specific dataset, such as MNIST.
 
@@ -8,43 +9,58 @@ The project is built on a novel optimization algorithm called Modified Teaching-
 Key implemented features from the paper include:
 Flexible Solution Encoding: Each potential CNN architecture is represented as a numerical vector, which encodes the number of layers, filter counts, kernel sizes, pooling parameters, and neuron counts.
 Modified Teacher Phase: This phase uses a social learning concept to guide the search, enhancing population diversity while accelerating convergence toward promising solutions .
-
 Modified Learner Phase: This phase incorporates both self-learning and adaptive peer learning, allowing for a more effective balance between exploring new architectures (exploration) and refining existing ones (exploitation) .
-
 Dual-Criterion Selection: A unique selection strategy that determines which solutions survive to the next generation by considering both their fitness (classification accuracy) and their diversity. This helps prevent the algorithm from getting stuck in local optima and promotes the discovery of novel, efficient networks .
 
-### Implementation & Workflow
+Implementation & Workflow
 The project is developed in Python using a modular architecture. Key libraries include TensorFlow for building and training the CNN models and NumPy for numerical operations. The code is organized into distinct modules for each core component (e.g., data_loader.py, fitness_evaluation.py, optimizer.py), with main.py serving as the central entry point for configuration and execution.
 
 The workflow follows Algorithm 11 from the paper:
-
-
 Setup: The program starts by loading a dataset (e.g., MNIST) and initializing a population of random CNN architectures.
-
-
 Optimization Loop: The algorithm iterates for a set number of generations. In each generation, the Teacher Phase, Learner Phase, and Dual-Criterion Selection are executed to evolve the population of solutions .
-
-
 Fitness Approximation: To ensure efficiency, candidate CNNs are trained for only one epoch during the optimization loop to quickly approximate their fitness.
-
-
-
 Final Training: After the loop completes, the single best architecture found undergoes full training with a large number of epochs (e.g., 100) to determine its final, accurate performance .
 
-
-### Expected Outcome
+Expected Outcome
 The final output of this project is a fully trained, optimized CNN model tailored to the input dataset. The objective is to produce network architectures that achieve classification accuracy competitive with or superior to state-of-the-art methods, often with significantly lower network complexity
 
-<!-- $env:PYTHONPATH="." | to be remembered -->
-## Decoding
-## Population
-## fitness
+### Project Structure
+The project is structured to facilitate easy understanding and modification. Key components include:
+
+## Decoding_learner_to_CNN_archetecture
+## Population_initializer
+## Fitness_evaluation
 ## Modified_teacher_phase = u_mean -> u_social -> modified_teacher_phase
 ## Modifoed_learner_phase = self_learning -> adaptive peerlearning -> modified_learner_phase
 ## Dual_criterio_selection
 ## proposed_solution
 ## data loader 
 ## main.py
+
+Getting Started
+Follow these steps to set up the project locally.
+
+Prerequisites
+Make sure you have Python 3.11 or newer installed.
+
+### Installation
+Clone the repository (if applicable)
+
+
+git clone https://your-repository-url.com/project.git
+cd project
+Create a Virtual Environment (Recommended)
+
+
+python -m venv venv
+source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+Install Dependencies
+
+
+pip install tensorflow numpy
+
+Run This line on your terminal to set the PYTHONPATH environment variable to the current directory, allowing Python to find the modules in this project:
+"""$env:PYTHONPATH=".""""
 
 
 ## Diagram: Full Algorithm Implementation Architecture
@@ -75,8 +91,8 @@ The final output of this project is a fully trained, optimized CNN model tailore
                             │                                                                   │    Learner Phase
                             │                                                                   │
                             |                            ┌───────────────────────────┐          |
-                            └───────────────────────────│ (Calls Selection - Alg 10)│<──────────┘
-                                                        └───────────────────────────┘
+                            └───────────────────────────│ (Calls Selection - Alg 10) │<─────────┘
+                                                        └────────────────────────────┘
                                                         
 
 ## Diagram: Full Algorithm Process Flow
@@ -90,7 +106,7 @@ The final output of this project is a fully trained, optimized CNN model tailore
 ┌─────────────────────────────────┐
 │   - Define 'config' dictionary  │
 │   - Load Data (calls loader)    │ ────> ╔═════════════════════╗
-│   - Initialize Population       │ ────> ║ Component Modules     ║
+│   - Initialize Population       │ ────> ║ Component Modules   ║
 │     (calls initializer)         │ ────> ║---------------------║
 └─────────────────────────────────┘       ║ data_loader.py      ║
                  │                        ║ population_init...py║
